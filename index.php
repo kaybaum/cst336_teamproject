@@ -1,9 +1,9 @@
 
 
 <head>
-    <title> KayDrian Games </title>
+    <title> Kaydrian Games </title>
     <?php
-        //include 'inc/functions.php';
+       include 'inc/connect.php';
     ?>
     <style>
         @import url("css/styles.css");
@@ -21,8 +21,8 @@
             Select Genre: 
             <select name='genre'>
                 <option value='none'>Select Genre</option>
-                <option value='rpg'>RPG</option>
-                <option value='openworld'>Open World</option>
+                <option value='Rpg'>RPG</option>
+                <option value='Open World'>Open World</option>
                 <option value='simulation'>Simulation</option>
                 <option value='adventure'>Adventure</option>
                 <option value='sports'>Sports</option>
@@ -53,27 +53,35 @@
                 //So if the min field isnt empty we just add AND price >= $_POST[min]
 
                 
-                if($_POST[min] != ''){ //Checking if a filter is not empty
+                if($_POST[min] != ""){ //Checking if a filter is not empty
                     echo "Min selected </br>";
+                    $sql.=" AND price >= " . $_POST[min];
                 }
-                if($_POST[max] != ''){
+                if($_POST[max] != ""){
                     echo "Max selected </br>";
+                    $sql.=" AND price <= " . $_POST[max];
                 }
                 if($_POST[genre] != "none"){
                     echo "Genre selected </br>";
+                    $sql.=" AND genre = '" . $_POST[genre] ."'";
                 }
                 if($_POST[rating] != "none"){
                     echo "Rating selected </br>";
+                    $sql.=" AND rating = '" . $_POST[rating] ."'";
                 }
+                echo $sql;
                 //Place holder stuffs.. stmt will equal some SQL crap later
                 
                 $game1=array("name"=>"Kayla's Excellent Adventure","genre"=>"FPS","rating"=>"T");
                 $game2=array("name"=>"336 Class","genre"=>"Horror","rating"=>"M");
-                $stmt = array($game1, $game2);
+                //$stmt = array($game1, $game2);
+                $stmt = $dbConn -> prepare ($sql);
+                $stmt -> execute ();
+        
                 echo "<table>";
-                echo "<tr><th>Game name</th><th>Genre</th><th>Rating</th></tr>";
+                echo "<tr><th>Game name</th><th>Genre</th><th>Rating</th><th>Price</th></tr>";
                 foreach($stmt as $row){
-                    echo  "<tr><td>" . $row[name] . "</td><td>" . $row[genre] . "</td><td>" . $row[rating] . "</td></tr>";
+                    echo  "<tr><td>" . $row[name] . "</td><td>" . $row[genre] . "</td><td>" . $row[rating] . "</td><td>" . $row[price] . "$</td></tr>";
                 }
                 echo "</table>";
             }

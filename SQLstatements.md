@@ -12,5 +12,5 @@ WHERE game.rating = 'Open World'
 SELECT name FROM game
 WHERE (game.price >=50)
 AND (game.price <=80)
-hiiiiiiii
+
 
