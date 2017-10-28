@@ -10,22 +10,24 @@
     </head>
     <body>
         <?php
-        $dbName = "KaydrianGames";
-        $username = 'kaybaum';
-        $password = '336';
+   
         
-        $dbConn = new PDO("mysql:host=localhost;dbname=$dbName", $username, $password);
+        if (strlen(getenv("sqluser")) == 0 || strlen(getenv("sqlpw")) == 0 || strlen(getenv("sqlhost")) == 0 || strlen(getenv("dbname")) == 0){
+                
+            $dbname = "KaydrianGames";
+            $username = 'kaybaum';
+            $password = '336';
+            $host = 'localhost';
+        }
+        else{
+            $dbname = getenv("dbname");
+            $username = getenv("sqluser");
+            $password = getenv("sqlpw");
+            $host = getenv("sqlhost");
+        }
+        
+        $dbConn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
         $dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-        
-        //$sql = " SELECT * FROM table_name WHERE id = :id ";
-        $sql = " SELECT * FROM game";
-        $stmt = $dbConn -> prepare ($sql);
-        //$stmt -> execute (  array ( ':id' => '1')  );
-        $stmt -> execute ();
-        
-
-
-
 
         ?>
 </body>
